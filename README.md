@@ -1,16 +1,26 @@
 <h1>Atividade Prática Sobre AWS e Linux - PB COMPASS.UOL</h1>
 
-> Status da Atividade: :warning: (Em desenvolvimento)
+> Status da Atividade: :heavy_check_mark: (Em desenvolvimento)
 
-### Tópicos
+## Tópicos
 
-* [Descrição do atividade](#descrição-da-atividade)
+* [Descrição da atividade](#descrição-da-atividade)
 
 * [Realeses](#realeses)
 
 * [Criação de uma instância EC2](#criação-de-uma-intância-ec2)
 
-### Descrição da atividade
+* [Configuração do NFS](#configuração-do-nfs)
+
+* [Criação do diretório dentro do NFS server](#criação-do-diretório-do-nfs-server)
+
+* [Instalação e ativação do Apche](#configuração-e-ativação-do-apache)
+
+* [Criação e automação do script de verificação de status do Apache](#criação-e-automação-do-script-de-verificação-do-status-do-apache)
+
+* [Links de apoio](#links-de-apoio)
+
+## Descrição da atividade
 
 Este repósitorio tem como objetivo descrever as etapas do processo de criação de uma instância EC2 com as seguintes configurações:
 
@@ -25,38 +35,42 @@ Além disso, apresentar a configuração no Linux, realizando os seguintes passo
 * Realizar a instalação do Apache;
 * Criar um script para enviar um arquivo de status do serviço do Apache para dentro do diretório no NFS.
 
-
-### Realeses
+## Realeses
 
 * Realese v1.0
-
-:heavy_check_mark: Instância Linux criada
+:heavy_check_mark: Criação da instância EC2
 
 * Realese v1.1
+:heavy_check_mark: Configuração do NFS
 
->
+* Realese v1.2
+:heavy_check_mark: Criação do diretório dentro do filesystem do NFS
 
-...
+* Realese v1.3
+:heavy_check_mark: Apache instalado e online
 
-### Criação de uma instância EC2
+* Realese v1.3
+:heavy_check_mark: Script para verificação do status do Apache
 
-* Para criação da Instância, inicialmente é necessário criar uma conta AWS. Após a criação, vá até o serviço EC2 e no menu lateral esquerdo clique em Instances. Dentro da aba Instances, clique em Launch instances para criar um nova instância e selecione as configurações de acordo com as necessidades do projeto, seguindo a seguinte ordem:
+## Criação de uma instância EC2
 
-1. Name and tags - Aqui são adicionadas as tags do projeto. São essenciais para identificação dos recursos;
+Para criação da Instância, inicialmente é necessário criar uma conta AWS. Após a criação, vá até o serviço EC2 e no menu lateral esquerdo clique em Instances. Dentro da aba Instances, clique em Launch instances para criar um nova instância e selecione as configurações de acordo com as necessidades do projeto, seguindo a seguinte ordem:
+
+1. Name and tags - Adicione as tags do projeto. São essenciais para identificação e gerenciamento dos recursos;
 
 2. AMI - Selecione a imagem do sistema operacional que deseja virtualizar (Ex.: Amazon Linux 2);
 
 3. Instance type - Selecione o tipo de instância (Ex.: t3.small);
 
-4. Key pair - Realize a criação de um chave de segurança e faça o download da mesma. Com ela você consegue realizar o login de maneira remota via SSH ou Putty;
+4. Key pair - Realize a criação de uma chave de segurança e faça o download da mesma. Com ela é feito o login de maneira remota via SSH ou Putty;
 
-5. Network settindgs - Nesta seção você seleciona o VPC, a Subnet, habilita a criação de um IP público e cria ou seleciona um grupo de segurança;
+5. Network settindgs - Nesta seção você seleciona o VPC, a Subnet, habilita a criação de um IP público e seleciona um grupo de segurança;
 
 6. Configure storage - Configuração do seu volume de armazenamento (Ex.: 16 GB do tipo gp2);
 
 7. Clique no botão Lauch instance para finalizar a criação da instância.
 
-* Após o fim da criação da instância é necessário realizar a reserva de um IP elástico. Vá até o menu lateral e clique na opção Elastic IPs. Dentro da aba, clique em Allocate Elastic IP address, e faça a seguinte seleção:
+Após o fim da criação da instância é necessário realizar a reserva de um IP elástico. Vá até o menu lateral e clique na opção Elastic IPs. Dentro da aba, clique em Allocate Elastic IP address e faça a seguinte seleção:
 
 1. Network Border Group - selecione a região na qual quer reservar o IP e é necessário que seja a mesma da instância;
 
@@ -66,24 +80,137 @@ Além disso, apresentar a configuração no Linux, realizando os seguintes passo
 
 4. Por fim, dentro da aba Elastic IP addresses selecione o IP criado clique em Actions e faça a associação com a instância clicando em Associate Elastic IP address.
 
-* Para finalizar, no menu lateral clique em Segurity Groups e faça a edição das regras de entrada selecionado o seu grupo de segurança e clicando em Inbound rules. Adicione as portas necessárias para o que deseja realizar ou siga o padrão da atividade.
+* Para finalizar, no menu lateral clique em Segurity Groups e faça a edição das regras de entrada selecionando o seu grupo de segurança e clicando em Inbound rules. Adicione as portas necessárias para o que deseja realizar ou siga o padrão da atividade.
+
+## Configuração do NFS
+
+* Após a criação da sua instância, faça o login remotamente atráves do terminal da sua máquina física via SSH com o seguinte comando:
+
+```
+ssh -i /diretório/chavedeacesso.pem ec2-user@IP-público
+```
+
+* Feito o login na sua máquina, mude para usuário root com o comando:
+
+```
+sudo su
+``` 
+
+* Dentro do seu diretório raiz crie um diretório para armazenar o ponto de montagem do NFS.
+
+```
+mkdir <nome-do-diretório>
+```
+
+* Os pacotes amazon-efs-utils e nfs-utils vem instalados na Amazon Linux 2. Caso não realize os seguintes comandos:
+
+```
+yum install -y amazon-efs-utils
+yum install nfs-utils 
+systemctl start nfs-utils
+```
+
+* Agora, dentro do diretório criado faça a montagem do NFS com o comando:
+
+```
+mount -t nfs <DNS>:/ <diretório-criado>
+```
+
+## Criação do diretório dentro do NFS server
+
+* Dentro do NFS server crie o diretório com seu nome.
+
+```
+sudo mkdir seu-nome
+```
+
+## Instalação e ativação do Apche
+
+* Inicialmente, realize a instalação do Apache:
+
+```
+yum install httpd
+```
+
+* Assim que a instalção finalizar, inicie e ative o serviço.
+
+```
+systemctl start httpd
+systemctl anable httpd
+```
+
+* Por fim, para verifique se o Apache foi iniciado e ativado.
+
+```
+systemctl status httpd
+```
+
+## Criação e automação do script de verificação de status do Apache
+
+Este script tem por finalidade checar se o serviço do Apache está ativo ou não e criar um arquivo personalizado informanda a data e a hora e status do serviço.
+
+* No terminal digite o comando abaixo para criar um arquivo:
+
+```
+vim nome-do-arquivo.sh
+```
+
+* Abaixo estão todos os comandos que devem ser inseridos dentro do arquivo criado:
+
+```
+#!/bin/bash
+# nome-do-arquivo.sh
 
 
+# Variável para armazenar a data e a hora e o status do serviço
+DATA=`date +'%d/%m/%Y as %T'`
+STATUS=$(systemctl status httpd)
 
 
+# Condicional para checar se o Apache está ativo ou não e imprimir resultado no arquivo gerado
+# Se a saída da variável for igual a trecho "active (running)" escreva que o Apache está ativo
+# Se não, escreva o Ache está desativado
+if [[ "${STATUS}" == *"active (running)"* ]]
+then
+        echo "O Apache está online - "$DATA >> /diretório-criado/seu-nome/servico_online.txt
+else
 
+        echo "O Apache está offline - "$DATA >> /diretório-criado/seu-nome/servico_offline.txt
 
+fi
+```
 
+* Ao finalizar o script, salve o arquivo e aplique a permissão para torná-lo executável.
 
+```
+chmod +x nome-do-arquivo.sh
+```
 
+* Agora, aplique as seguintes permissões dentro da pasta com seu nome criada dentro do NFS:
 
+```
+chmod 775 /diretório-criado/seu-nome/
+chmod 775 /diretório-criado/seu-nome/*
+```
 
+* Após isso será necessário agendar a execução do scrip no crontab.
 
+```
+crontab -e
+```
 
+* Insira o seguinte script:
 
+```
+## O script vai rodar a cada 5 minutos
+*/5 * * * * bash /nome-do-script.sh
+```
 
+Finalizando o todo o procedimento descrito, a cada 5 minutos o script vai ser executado e irá realizar a verificação do status do serviço Apache e emitirá uma mensagem que será armazenada dentro de um arquivo de texto que será armazenada dentro do diretório criado dentro do filesystem do NFS.  
 
+## Links de apoio
 
-
-
-
+* https://docs.aws.amazon.com/pt_br/AWSEC2/latest/UserGuide/EC2_GetStarted.html
+* https://docs.aws.amazon.com/pt_br/efs/latest/ug/mounting-fs-old.html#mounting-fs-install-nfsclient
+* https://docs.aws.amazon.com/pt_br/efs/latest/ug/mounting-fs-mount-helper-ec2-linux.html
+* https://stackoverflow.com/questions/36263335/how-to-check-whether-mongodb-is-running-from-a-shell-script
