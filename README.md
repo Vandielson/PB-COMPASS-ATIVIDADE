@@ -85,7 +85,7 @@ sudo su
 mkdir <nome-do-diretório>
 ```
 
-* Os pacotes amazon-efs-utils e nfs-utils vem instalados na Amazon Linux 2. Caso não realize os seguintes comandos:
+* Os pacotes amazon-efs-utils e nfs-utils vem instalados na Amazon Linux 2. Caso não, realize os seguintes comandos:
 
 ```
 yum install -y amazon-efs-utils
@@ -104,7 +104,7 @@ mount -t nfs <DNS>:/ <diretório-criado>
 * Dentro do NFS server crie o diretório com seu nome.
 
 ```
-sudo mkdir seu-nome
+mkdir seu-nome
 ```
 
 ## Instalação e ativação do Apche
@@ -151,8 +151,8 @@ STATUS=$(systemctl status httpd)
 
 
 # Condicional para checar se o Apache está ativo ou não e imprimir resultado no arquivo gerado
-# Se a saída da variável for igual a trecho "active (running)" escreva que o Apache está ativo
-# Se não, escreva o Ache está desativado
+# Se a saída da variável for igual a trecho "active (running)" escreva que o Apache está online
+# Se não, escreva o Ache está offline
 if [[ "${STATUS}" == *"active (running)"* ]]
 then
         echo "O Apache está online - "$DATA >> /diretório-criado/seu-nome/servico_online.txt
@@ -185,11 +185,10 @@ crontab -e
 * Insira o seguinte script:
 
 ```
-## O script vai rodar a cada 5 minutos
 */5 * * * * bash /nome-do-script.sh
 ```
 
-Finalizando todo o procedimento descrito, a cada 5 minutos o script vai ser executado e irá realizar a verificação do status do serviço Apache e emitirá uma mensagem que será armazenada dentro de um arquivo de texto que será armazenada no diretório criado dentro do filesystem do NFS.  
+Finalizando todo o procedimento descrito, a cada 5 minutos o script vai ser executado e irá realizar a verificação do status do serviço Apache e emitirá uma mensagem que será armazenada dentro de um arquivo de texto que será ficará salvo no diretório criado dentro do filesystem do NFS.  
 
 ## Links de apoio
 
