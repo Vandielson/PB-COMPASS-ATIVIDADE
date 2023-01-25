@@ -67,19 +67,19 @@ Após o fim da criação da instância é necessário realizar a reserva de um I
 
 ## Configuração do NFS
 
-* Após a criação da sua instância, faça o login remotamente atráves do terminal da sua máquina física via SSH com o seguinte comando:
+* Após a criação da instância, faça o login remotamente atráves do terminal da sua máquina física via SSH com o seguinte comando:
 
 ```
 ssh -i /diretório/chavedeacesso.pem ec2-user@IP-público
 ```
 
-* Feito o login na sua máquina, mude para usuário root com o comando:
+* Feito o login na máquina e mude para usuário root com o comando:
 
 ```
 sudo su
 ``` 
 
-* Dentro do seu diretório raiz crie um diretório para armazenar o ponto de montagem do NFS.
+* Dentro do diretório raiz crie um diretório para armazenar o ponto de montagem do NFS.
 
 ```
 mkdir <nome-do-diretório>
@@ -89,7 +89,9 @@ mkdir <nome-do-diretório>
 
 ```
 yum install -y amazon-efs-utils
-yum install nfs-utils 
+
+yum install nfs-utils
+ 
 systemctl start nfs-utils
 ```
 
@@ -119,10 +121,11 @@ yum install httpd
 
 ```
 systemctl start httpd
+
 systemctl anable httpd
 ```
 
-* Por fim, para verifique se o Apache foi iniciado e ativado.
+* Por fim, verifique se o Apache foi iniciado e ativado.
 
 ```
 systemctl status httpd
@@ -142,6 +145,7 @@ vim nome-do-arquivo.sh
 
 ```
 #!/bin/bash
+# Arquivos executáveis devem sempre começar com o barra bin barra bash
 # nome-do-arquivo.sh
 
 
@@ -163,13 +167,13 @@ else
 fi
 ```
 
-* Ao finalizar o script, salve o arquivo e aplique a permissão para torná-lo executável.
+* Ao finalizar o script, salve o arquivo e realize o comando abaixo para torná-lo executável:
 
 ```
 chmod +x nome-do-arquivo.sh
 ```
 
-* Agora, aplique as seguintes permissões dentro da pasta com seu nome criada dentro do NFS:
+* Agora, aplique as seguintes permissões dentro da pasta com seu nome criada no NFS:
 
 ```
 chmod 775 /diretório-criado/seu-nome/
