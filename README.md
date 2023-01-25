@@ -1,12 +1,11 @@
 <h1>Atividade Prática Sobre AWS e Linux - PB COMPASS.UOL</h1>
 
-> Status da Atividade: :heavy_check_mark: (Em desenvolvimento)
+> Status da Atividade: :heavy_check_mark: (concluída)
+> Atividade desenvolvida por: Vandielson Tenório Feitosa de Assis
 
 ## Tópicos
 
 * [Descrição da atividade](#descrição-da-atividade)
-
-* [Realeses](#realeses)
 
 * [Criação de uma instância EC2](#criação-de-uma-intância-ec2)
 
@@ -34,23 +33,6 @@ Além disso, apresentar a configuração no Linux, realizando os seguintes passo
 * Criar um diretório dentro do filesystem do NFS;
 * Realizar a instalação do Apache;
 * Criar um script para enviar um arquivo de status do serviço do Apache para dentro do diretório no NFS.
-
-## Realeses
-
-* Realese v1.0
-:heavy_check_mark: Criação da instância EC2
-
-* Realese v1.1
-:heavy_check_mark: Configuração do NFS
-
-* Realese v1.2
-:heavy_check_mark: Criação do diretório dentro do filesystem do NFS
-
-* Realese v1.3
-:heavy_check_mark: Apache instalado e online
-
-* Realese v1.3
-:heavy_check_mark: Script para verificação do status do Apache
 
 ## Criação de uma instância EC2
 
@@ -206,7 +188,7 @@ crontab -e
 */5 * * * * bash /nome-do-script.sh
 ```
 
-Finalizando o todo o procedimento descrito, a cada 5 minutos o script vai ser executado e irá realizar a verificação do status do serviço Apache e emitirá uma mensagem que será armazenada dentro de um arquivo de texto que será armazenada dentro do diretório criado dentro do filesystem do NFS.  
+Finalizando todo o procedimento descrito, a cada 5 minutos o script vai ser executado e irá realizar a verificação do status do serviço Apache e emitirá uma mensagem que será armazenada dentro de um arquivo de texto que será armazenada no diretório criado dentro do filesystem do NFS.  
 
 ## Links de apoio
 
