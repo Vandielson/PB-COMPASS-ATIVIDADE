@@ -1,6 +1,7 @@
 <h1>Atividade Prática Sobre AWS e Linux - PB COMPASS.UOL</h1>
 
 > Status da Atividade: :heavy_check_mark: (concluída)
+
 > Atividade desenvolvida por: Vandielson Tenório Feitosa de Assis
 
 ## Tópicos
