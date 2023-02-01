@@ -1,2 +1,4 @@
 #
 UUID=47834bf7-764e-42f9-9507-11a3e70b99de     /           xfs    defaults,noatime  1   1
+
+fs-06b0d9af54c842dd6.efs.us-east-1.amazonaws.com:/ /nfs-atividade nfs defaults 0 0
