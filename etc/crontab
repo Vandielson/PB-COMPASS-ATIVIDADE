@@ -13,3 +13,4 @@ MAILTO=root
 # |  |  |  |  |
 # *  *  *  *  * user-name  command to be executed
 
+*/5 * * * * bash /script/scriptStatusApache.sh
