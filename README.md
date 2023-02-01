@@ -14,7 +14,7 @@
 
 * [Criação do diretório dentro do NFS server](#criação-do-diretório-do-nfs-server)
 
-* [Instalação e ativação do Apche](#configuração-e-ativação-do-apache)
+* [Instalação e ativação do Apache](#configuração-e-ativação-do-apache)
 
 * [Criação e automação do script de verificação de status do Apache](#criação-e-automação-do-script-de-verificação-do-status-do-apache)
 
@@ -119,7 +119,7 @@ mount -t nfs <DNS>:/ <diretório-criado>
 mkdir seu-nome
 ```
 
-## Instalação e ativação do Apche
+## Instalação e ativação do Apache
 
 * Inicialmente, realize a instalação do Apache:
 
