@@ -1,7 +1,7 @@
 #!/bin/bash
 # scriptStatusApache.sh
 
-# Váriaveis para armazenar a data e a hora e o status do serviço online
+# Váriaveis para armazenar a data e hora e o status do serviço httpd
 DATA=`date +'%d/%m/%Y as %T'`
 STATUSAPACHE=$(systemctl status httpd)
 
