@@ -22,7 +22,7 @@
 
 ## Descrição da atividade
 
-Este repósitorio tem como objetivo descrever as etapas do processo de criação de uma instância EC2 com as seguintes configurações:
+Este repósitorio tem como objetivo apresentar as etapas do processo de criação de uma instância EC2 com as seguintes configurações:
 
 * Sistema operacional Amazon Linux 2 (Família t3.small, 16 GB SSD);
 * Associar 1 elastic IP e anexar à instância EC2;
@@ -47,7 +47,7 @@ Para criação da Instância, inicialmente é necessário criar uma conta AWS. A
 
 4. Key pair - Realize a criação de uma chave de segurança e faça o download da mesma. Com ela é feito o login de maneira remota via SSH ou Putty;
 
-5. Network settindgs - Nesta seção você seleciona o VPC, a Subnet, habilita a criação de um IP público e seleciona um grupo de segurança;
+5. Network settings - Nesta seção você seleciona o VPC, a Subnet, habilita a criação de um IP público e seleciona um grupo de segurança;
 
 6. Configure storage - Configuração do seu volume de armazenamento (Ex.: 16 GB do tipo gp2);
 
@@ -63,7 +63,7 @@ Após o fim da criação da instância é necessário realizar a reserva de um I
 
 4. Por fim, dentro da aba Elastic IP addresses selecione o IP criado clique em Actions e faça a associação com a instância clicando em Associate Elastic IP address.
 
-* Para finalizar, no menu lateral clique em Segurity Groups e faça a edição das regras de entrada selecionando o seu grupo de segurança e clicando em Inbound rules. Adicione as portas necessárias para o que deseja realizar ou siga o padrão da atividade.
+5. Para finalizar, no menu lateral clique em Segurity Groups e faça a edição das regras de entrada selecionando o seu grupo de segurança e clicando em Inbound rules. Adicione as portas necessárias para o que deseja realizar ou siga o padrão da atividade.
 
 ## Configuração do NFS
 
@@ -73,7 +73,7 @@ Após o fim da criação da instância é necessário realizar a reserva de um I
 ssh -i /diretório/chavedeacesso.pem ec2-user@IP-público
 ```
 
-* Feito o login na máquina e mude para usuário root com o comando:
+* Feito o login na máquina, mude para usuário root com o comando:
 
 ```
 sudo su
@@ -93,6 +93,8 @@ yum install -y amazon-efs-utils
 yum install nfs-utils
  
 systemctl start nfs-utils
+
+systemctl enable nfs-utils
 ```
 
 * Agora, dentro do diretório criado faça a montagem do NFS com o comando:
@@ -100,6 +102,14 @@ systemctl start nfs-utils
 ```
 mount -t nfs <DNS>:/ <diretório-criado>
 ```
+
+* Por fim, vá até o diretório etc e abra o arquivo fstab. O arquivo armazena a configuração de quais dispositivos devem ser montados e qual o ponto de montagem de cada um na carga do sistema operacional, mesmo dispositivos locais e remotos. Dentro do arquivo fstab, insira o seguinte comando:
+
+```
+<DNS ou IP>:/ /nfs nfs defaults 0 0
+```
+
+* Resumindo o comando, O primeiro parâmetro é o endereço do NFS server + diretório, o segundo é o diretório onde será realizada a montagem, depois vem o tipo de serviço que é o nfs, a especificação de que será executado por padrão (defaults), o primeiro zero representa que não será realizado nenhum backup e o segundo zero é dedicado a checagens de disco com o utilitário fsck (file system check). Assim, sempre que o máquina for reinicializada a montegem do nfs será feita.
 
 ## Criação do diretório dentro do NFS server
 
@@ -122,7 +132,7 @@ yum install httpd
 ```
 systemctl start httpd
 
-systemctl anable httpd
+systemctl enable httpd
 ```
 
 * Por fim, verifique se o Apache foi iniciado e ativado.
@@ -133,7 +143,7 @@ systemctl status httpd
 
 ## Criação e automação do script de verificação de status do Apache
 
-Este script tem por finalidade checar se o serviço do Apache está ativo ou não e criar um arquivo personalizado informanda a data e a hora e status do serviço.
+Este script tem por finalidade checar se o serviço do Apache está ativo ou não e criar um arquivo personalizado informando a data, a hora e o status do serviço.
 
 * No terminal digite o comando abaixo para criar um arquivo:
 
@@ -180,13 +190,7 @@ chmod 775 /diretório-criado/seu-nome/
 chmod 775 /diretório-criado/seu-nome/*
 ```
 
-* Após isso será necessário agendar a execução do scrip no crontab.
-
-```
-crontab -e
-```
-
-* Insira o seguinte script:
+* Após isso será necessário agendar a execução do scrip no crontab. Vá até o diretório etc e abra o arquivo crontab e adicione o seguinte script:
 
 ```
 */5 * * * * bash /nome-do-script.sh
